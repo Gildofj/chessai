@@ -83,7 +83,7 @@ class Heuristics:
             for y in range(8):
                 piece = board.chesspieces[x][y]
                 if piece != 0:
-                    if piece.piece_type == pieces.Piece.WHITE:
+                    if piece_type == pieces.Piece.WHITE:
                         white += table[x][y]
                     else:
                         black += table[x][y]
@@ -114,13 +114,13 @@ class AI:
     def get_ai_move(chessboard, invalid_moves):
         best_move = 0
         best_score = AI.INFINITE
-        for move in chessboard.get_possible_moves(Pieces.Piece.BLACK):
+        for move in chessboard.get_possible_moves(pieces.Piece.BLACK):
             if AI.is_invalid_move(move, invalid_moves):
                 continue
             copy = board.Board.clone(chessboard)
             copy.perform_move(move)
             score = AI.alphabeta(copy, 2, -AI.INFINITE, AI.INFINITE, True)
-            if score < best_score:
+            if (score < best_score):
                 best_score = score
                 best_move = move
 
@@ -197,3 +197,6 @@ class Move:
 
     def equals(self, other_move):
         return self.xfrom == other_move.xfrom and self.yfrom == other_move.yfrom and self.xto == other_move.xto and self.yto == other_move.yto
+
+    def to_string(self):
+        return "(" + str(self.xfrom) + ", " + str(self.yfrom) + ", " + str(self.yfrom) + ")-> (" + str(self.xto) + ", " + str(self.yto) + ")"

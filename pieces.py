@@ -65,3 +65,7 @@ class Piece:
 
     def to_string(self):
         return self.color + self.piece_type + " "
+
+
+class Rook(Piece):
+    pass
