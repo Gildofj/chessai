@@ -17,8 +17,8 @@ class Board:
         self.black_king_moved = black_king_moved
 
     @classmethod
-    def clone(cls):
-        chess_pieces = [[o for x in range(Board.WIDTH) for y in range(Board.HEIGHT)]]
+    def clone(cls, chessboard):
+        chesspieces = [[0 for x in range(Board.WIDTH)] for y in range(Board.HEIGHT)]
 
         for x in range(Board.WIDTH):
             for y in range(Board.HEIGHT):
@@ -41,6 +41,9 @@ class Board:
 
         # Creating Rooks
         chess_pieces[0][Board.HEIGHT - 1] = Rook(0, Board.HEIGHT - 1, Piece.WHITE)
+        chess_pieces[Board.WIDTH - 1][Board.HEIGHT - 1] = Rook(
+            Board.HEIGHT - 1, Board.HEIGHT - 1, Piece.WHITE
+        )
         chess_pieces[0][0] = Rook(0, 0, Piece.BLACK)
         chess_pieces[Board.WIDTH - 1][0] = Rook(Board.WIDTH - 1, 0, Piece.BLACK)
 
@@ -133,3 +136,33 @@ class Board:
                 return True
 
             return False
+
+    def get_piece(self, x, y):
+        if not self.in_bounds(x, y):
+            return 0
+
+        return self.chesspieces[x][y]
+
+    def in_bounds(self, x, y):
+        return (
+            x >= 0
+            and y >= 0
+            and x < Board.WIDTH
+            and y < Board.WIDTH
+            and y < Board.HEIGHT
+        )
+
+    def to_string(self):
+        string = "    A  B  C  D  E  F  G  H\n"
+        string += "   ________________________\n"
+        for y in range(Board.HEIGHT):
+            string += str(8 - y) + " | "
+            for x in range(Board.WIDTH):
+                piece = self.chesspieces[x][y]
+                if piece != 0:
+                    string += piece.to_string()
+                else:
+                    string += ".. "
+            string += "\n"
+
+        return string + "\n"

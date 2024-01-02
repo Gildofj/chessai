@@ -1,4 +1,4 @@
-import board
+from ai.move import Move
 
 
 class Piece:
@@ -17,23 +17,23 @@ class Piece:
         for i in range(1, 8):
             if not board.in_bounds(self.x + i, self.y + i):
                 break
-            piece = board.get_pieces(self.x + i, self.y + i)
+            piece = board.get_piece(self.x + i, self.y + i)
             moves.append(self.get_move(board, self.x + i, self.y + i))
             if piece != 0:
                 break
 
         for i in range(1, 8):
-            if not board.in_bounds(self.x + i, self.y + i):
+            if not board.in_bounds(self.x + i, self.y - i):
                 break
-            piece = board.get_pieces(self.x + i, self.y - i)
-            moves.append(self.get_move(board, self.x + i, self.y + i))
+            piece = board.get_piece(self.x + i, self.y - i)
+            moves.append(self.get_move(board, self.x + i, self.y - i))
             if piece != 0:
                 break
 
         for i in range(1, 8):
             if not board.in_bounds(self.x - i, self.y - i):
                 break
-            piece = board.get_pieces(self.x - i, self.y - i)
+            piece = board.get_piece(self.x - i, self.y - i)
             moves.append(self.get_move(board, self.x - i, self.y - i))
             if piece != 0:
                 break
@@ -41,8 +41,42 @@ class Piece:
         for i in range(1, 8):
             if not board.in_bounds(self.x - i, self.y + i):
                 break
-            piece = board.get_pieces(self.x - i, self.y + i)
+            piece = board.get_piece(self.x - i, self.y + i)
             moves.append(self.get_move(board, self.x - i, self.y + i))
+            if piece != 0:
+                break
+
+        return self.remove_null_from_list(moves)
+
+    def get_possible_horizontal_moves(self, board):
+        moves = []
+
+        # Moves to the right of the piece.
+        for i in range(1, 8 - self.x):
+            piece = board.get_piece(self.x + i, self.y)
+            moves.append(self.get_move(board, self.x + i, self.y))
+
+            if piece != 0:
+                break
+
+        # Moves to the left of the piece.
+        for i in range(1, self.x + 1):
+            piece = board.get_piece(self.x - i, self.y)
+            moves.append(self.get_move(board, self.x - i, self.y))
+            if piece != 0:
+                break
+
+        # Downward moves.
+        for i in range(1, 8 - self.y):
+            piece = board.get_piece(self.x, self.y + i)
+            moves.append(self.get_move(board, self.x, self.y + i))
+            if piece != 0:
+                break
+
+        # Upward moves.
+        for i in range(1, self.y + 1):
+            piece = board.get_piece(self.x, self.y - i)
+            moves.append(self.get_move(board, self.x, self.y - i))
             if piece != 0:
                 break
 
@@ -54,9 +88,9 @@ class Piece:
             piece = board.get_piece(xto, yto)
             if piece != 0:
                 if piece.color != self.color:
-                    pass
-                else:
-                    pass
+                    move = Move(self.x, self.y, xto, yto, False)
+            else:
+                move = Move(self.x, self.y, xto, yto, False)
 
         return move
 

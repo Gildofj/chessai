@@ -12,6 +12,7 @@ class King(Piece):
 
     def get_possible_moves(self, board):
         moves = []
+
         moves.append(self.get_move(board, self.x + 1, self.y))
         moves.append(self.get_move(board, self.x + 1, self.y + 1))
         moves.append(self.get_move(board, self.x, self.y + 1))
@@ -20,6 +21,7 @@ class King(Piece):
         moves.append(self.get_move(board, self.x - 1, self.y - 1))
         moves.append(self.get_move(board, self.x, self.y - 1))
         moves.append(self.get_move(board, self.x + 1, self.y - 1))
+
         moves.append(self.get_top_castling_move(board))
         moves.append(self.get_bottom_castling_move(board))
 

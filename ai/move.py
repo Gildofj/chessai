@@ -1,10 +1,10 @@
 class Move:
-    def __init__(self, xfrom, yfrom, xto, yto, clastling_move):
+    def __init__(self, xfrom, yfrom, xto, yto, castling_move):
         self.xfrom = xfrom
         self.yfrom = yfrom
         self.xto = xto
         self.yto = yto
-        self.castling_move = clastling_move
+        self.castling_move = castling_move
 
     def equals(self, other_move):
         return (
@@ -22,7 +22,7 @@ class Move:
             + str(self.yfrom)
             + ", "
             + str(self.yfrom)
-            + ")-> ("
+            + ") -> ("
             + str(self.xto)
             + ", "
             + str(self.yto)

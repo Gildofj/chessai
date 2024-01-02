@@ -1,6 +1,11 @@
 import numpy
 
+from pieces.bishop import Bishop
+from pieces.knight import Knight
+from pieces.pawn import Pawn
 from pieces.piece import Piece
+from pieces.queen import Queen
+from pieces.rook import Rook
 
 
 class Heuristics:
@@ -49,7 +54,7 @@ class Heuristics:
             [-5, 0, 0, 0, 0, 0, 0, -5],
             [-5, 0, 0, 0, 0, 0, 0, -5],
             [-5, 0, 0, 0, 0, 0, 0, -5],
-            [-5, 5, 0, 0, 0, 0, 0, -5],
+            [-5, 0, 0, 0, 0, 0, 0, -5],
             [-5, 0, 0, 0, 0, 0, 0, -5],
             [5, 10, 10, 10, 10, 10, 10, 5],
             [0, 0, 0, 0, 0, 0, 0, 0],
@@ -71,36 +76,53 @@ class Heuristics:
 
     @staticmethod
     def evaluate(board):
-        pass
+        material = Heuristics.get_material_score(board)
+
+        pawns = Heuristics.get_piece_position_score(
+            board, Pawn.PIECE_TYPE, Heuristics.PAWN_TABLE
+        )
+        knights = Heuristics.get_piece_position_score(
+            board, Knight.PIECE_TYPE, Heuristics.KNIGHT_TABLE
+        )
+        bishops = Heuristics.get_piece_position_score(
+            board, Bishop.PIECE_TYPE, Heuristics.BISHOP_TABLE
+        )
+        rooks = Heuristics.get_piece_position_score(
+            board, Rook.PIECE_TYPE, Heuristics.ROOK_TABLE
+        )
+        queens = Heuristics.get_piece_position_score(
+            board, Queen.PIECE_TYPE, Heuristics.QUEEN_TABLE
+        )
+
+        return material + pawns + knights + bishops + rooks + queens
 
     @staticmethod
     def get_piece_position_score(board, piece_type, table):
         white = 0
         black = 0
-
         for x in range(8):
             for y in range(8):
                 piece = board.chesspieces[x][y]
                 if piece != 0:
-                    if piece_type == Piece.WHITE:
-                        white += table[x][y]
-                    else:
-                        black += table[x][y]
+                    if piece.piece_type == piece_type:
+                        if piece.color == Piece.WHITE:
+                            white += table[x][y]
+                        else:
+                            black += table[7 - x][y]
 
         return white - black
 
     @staticmethod
-    def get_material_position_score(board):
+    def get_material_score(board):
         white = 0
         black = 0
-
         for x in range(8):
             for y in range(8):
                 piece = board.chesspieces[x][y]
                 if piece != 0:
-                    if piece.piece_type == Piece.WHITE:
-                        white += table[x][y]
+                    if piece.color == Piece.WHITE:
+                        white += piece.value
                     else:
-                        black += table[x][y]
+                        black += piece.value
 
         return white - black
