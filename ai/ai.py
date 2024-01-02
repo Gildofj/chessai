@@ -1,4 +1,4 @@
-import heuristics
+from heuristics import Heuristics
 
 from board import Board
 from pieces.piece import Piece
@@ -40,7 +40,7 @@ class AI:
 
     def minmax(board, depth, maximizing):
         if (depth == 0):
-            return heuristics.Heuristics.evaluate(board)
+            return Heuristics.evaluate(board)
         if (maximizing):
             best_score = -AI.INFINITE
             for move in board.get_possible_moves(Piece.WHITE):
@@ -63,7 +63,7 @@ class AI:
     @staticmethod
     def alphabeta(chessboard, depth, a, b, maximizing):
         if (depth == 0):
-            return heuristics.Heuristics.evaluate(chessboard)
+            return Heuristics.evaluate(chessboard)
         if (maximizing):
             best_score = -AI.INFINITE
             for move in chessboard.get_possible_moves(Piece.WHITE):
