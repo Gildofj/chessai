@@ -1,4 +1,10 @@
+import os
+import sys
+
 from simple_chalk import chalk
+
+sys.path.append(os.path.abspath(os.path.join("pieces")))
+sys.path.append(os.path.abspath(os.path.join("ai")))
 
 print("")
 titleColor = chalk.bgRed.white.bold
